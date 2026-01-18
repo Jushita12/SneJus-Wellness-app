@@ -18,7 +18,8 @@
     "next": "15.5.7",
     "posthog-js": "^1.270.1",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",

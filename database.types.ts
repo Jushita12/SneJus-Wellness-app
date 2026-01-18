@@ -48,10 +48,13 @@ export type Database = {
       }
       daily_logs: {
         Row: {
+          calorie_target: number | null
+          calories_consumed: number | null
           created_at: string | null
           date: string
           id: string
           mood: string | null
+          nsvs: string[] | null
           steps: number | null
           sugar_cravings: string | null
           symptoms: string[] | null
@@ -62,10 +65,13 @@ export type Database = {
           weight: number | null
         }
         Insert: {
+          calorie_target?: number | null
+          calories_consumed?: number | null
           created_at?: string | null
           date: string
           id?: string
           mood?: string | null
+          nsvs?: string[] | null
           steps?: number | null
           sugar_cravings?: string | null
           symptoms?: string[] | null
@@ -76,10 +82,13 @@ export type Database = {
           weight?: number | null
         }
         Update: {
+          calorie_target?: number | null
+          calories_consumed?: number | null
           created_at?: string | null
           date?: string
           id?: string
           mood?: string | null
+          nsvs?: string[] | null
           steps?: number | null
           sugar_cravings?: string | null
           symptoms?: string[] | null
@@ -93,6 +102,7 @@ export type Database = {
       }
       meals: {
         Row: {
+          calories: number | null
           created_at: string | null
           description: string
           has_rice: boolean | null
@@ -102,6 +112,7 @@ export type Database = {
           type: string
         }
         Insert: {
+          calories?: number | null
           created_at?: string | null
           description: string
           has_rice?: boolean | null
@@ -111,6 +122,7 @@ export type Database = {
           type: string
         }
         Update: {
+          calories?: number | null
           created_at?: string | null
           description?: string
           has_rice?: boolean | null
@@ -154,29 +166,35 @@ export type Database = {
         Row: {
           created_at: string | null
           last_active_date: string | null
+          meal_streak: number | null
           movement_streak: number | null
           streak_count: number | null
           unlocked_badges: string[] | null
           updated_at: string | null
           user_name: string
+          water_streak: number | null
         }
         Insert: {
           created_at?: string | null
           last_active_date?: string | null
+          meal_streak?: number | null
           movement_streak?: number | null
           streak_count?: number | null
           unlocked_badges?: string[] | null
           updated_at?: string | null
           user_name: string
+          water_streak?: number | null
         }
         Update: {
           created_at?: string | null
           last_active_date?: string | null
+          meal_streak?: number | null
           movement_streak?: number | null
           streak_count?: number | null
           unlocked_badges?: string[] | null
           updated_at?: string | null
           user_name?: string
+          water_streak?: number | null
         }
         Relationships: []
       }
