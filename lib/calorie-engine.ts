@@ -74,27 +74,58 @@ export function estimateCalories(input: string): { total: number; items: { name:
   return { total, items };
 }
 
-export function getCoachFeedback(consumed: number, target: number, user: 'Jushita' | 'Sneha') {
-  const diff = consumed - target;
-  const isJushita = user === 'Jushita';
+export function getCoachFeedback(log: any, user: 'Jushita' | 'Sneha') {
+  const consumed = log?.calories_consumed || 0;
+  const burned = log?.calories_burned || 0;
+  const target = log?.calorie_target || 1500;
+  const water = log?.water || 0;
+  const steps = log?.steps || 0;
+  const isPeriod = log?.is_period;
+  const isSick = log?.is_sick;
+  const sickNotes = log?.sick_notes;
+  const cravings = log?.sugar_cravings;
   
+  const netCalories = consumed - burned;
+  const diff = netCalories - target;
+
+  // 0. Sickness Context (Absolute Highest Priority)
+  if (isSick) {
+    return `Health is the priority today, ${user}. Since you're feeling ${sickNotes || 'unwell'}, please skip the gym and focus on 100% recovery. Drink plenty of warm fluids, prioritize sleep, and eat nourishing, easy-to-digest meals. We'll get back to the goals once you're 100%. 🍵✨`;
+  }
+
+  // 1. Period/Cycle Context (Highest Priority)
+  if (isPeriod) {
+    return `Listen to your body today, ${user}. During your period, your basal metabolic rate actually increases slightly, but so does inflammation. Focus on iron-rich foods and gentle movement. If you're craving ${cravings || 'something sweet'}, try dark chocolate or fruit first, but don't stress a small treat.`;
+  }
+
+  // 2. Hydration Check
+  if (water < 1.5 && new Date().getHours() > 14) {
+    return `Hey ${user}, your hydration is a bit low for this time of day (only ${water}L). Low water often masquerades as hunger or fatigue. Drink a large glass now before your next meal!`;
+  }
+
+  // 3. Calorie & Energy Balance
   if (consumed === 0) {
-    return `Ready for a fresh start, ${user}? Let's focus on a high-protein first meal to keep your energy steady today. No pressure, just one good choice at a time.`;
+    return `Ready for a fresh start, ${user}? Let's focus on a high-protein first meal to stabilize your blood sugar for the day.`;
   }
-  
-  if (diff < -400) {
-    return "You're fueling quite light today. Remember, sustainable fat loss requires energy for your metabolism and hormones to function. Try to add a small protein-rich snack like Greek yogurt or a few nuts.";
+
+  if (diff < -500 && steps > 8000) {
+    return `You've been very active but your intake is quite low. To prevent a metabolic slowdown or a binge later, ensure your next meal has healthy fats and complex carbs. Fuel the fire! 🔥`;
   }
-  
-  if (Math.abs(diff) <= 150) {
-    return "Beautifully balanced. You're hitting that 'Goldilocks' zone where your body feels safe to release fat while keeping your hormones happy. Keep this rhythm!";
+
+  if (Math.abs(diff) <= 200) {
+    return `Spot on, ${user}! You're in the 'Optimal Zone'. Your energy intake perfectly matches your goals. This consistency is exactly how long-term body composition changes happen.`;
   }
-  
-  if (diff > 150 && diff < 500) {
-    return "Today was a high-energy day, and that's perfectly normal. Our bodies aren't machines. Focus on hydration and a fiber-rich dinner to help your body process everything smoothly.";
+
+  if (diff > 300) {
+    return `A bit of a surplus today? No problem. Use that extra energy for a strong workout tomorrow. Remember, one day doesn't break progress—it's the 80/20 rule. Focus on fiber and protein for your next meal.`;
   }
-  
-  return "A bit of a surplus today? Don't sweat it. One day doesn't define your journey—consistency does. Let's prioritize a gentle 20-minute walk and get back to our baseline tomorrow.";
+
+  // 4. Movement Nudge
+  if (steps < 3000 && new Date().getHours() > 17) {
+    return `Your movement is a bit low today. Even a 15-minute 'digestive walk' after dinner can significantly improve your insulin sensitivity and sleep quality.`;
+  }
+
+  return `You're doing great, ${user}. Keep logging your meals and movement. Consistency is the only 'secret' to wellness.`;
 }
 
 export function getCalorieTarget(age: number, weight: number, activity: 'low' | 'medium' | 'high'): number {

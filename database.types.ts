@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       activities: {
         Row: {
+          calories_burned: number | null
           created_at: string | null
           duration: number | null
           id: string
@@ -23,6 +24,7 @@ export type Database = {
           type: string
         }
         Insert: {
+          calories_burned?: number | null
           created_at?: string | null
           duration?: number | null
           id?: string
@@ -30,6 +32,7 @@ export type Database = {
           type: string
         }
         Update: {
+          calories_burned?: number | null
           created_at?: string | null
           duration?: number | null
           id?: string
@@ -46,15 +49,59 @@ export type Database = {
           },
         ]
       }
+      cycle_settings: {
+        Row: {
+          cycle_length: number | null
+          is_regular: string | null
+          last_period_start: string | null
+          period_duration: number | null
+          tracking_goal: string | null
+          updated_at: string | null
+          user_name: string
+        }
+        Insert: {
+          cycle_length?: number | null
+          is_regular?: string | null
+          last_period_start?: string | null
+          period_duration?: number | null
+          tracking_goal?: string | null
+          updated_at?: string | null
+          user_name: string
+        }
+        Update: {
+          cycle_length?: number | null
+          is_regular?: string | null
+          last_period_start?: string | null
+          period_duration?: number | null
+          tracking_goal?: string | null
+          updated_at?: string | null
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cycle_settings_user_name_fkey"
+            columns: ["user_name"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_name"]
+          },
+        ]
+      }
       daily_logs: {
         Row: {
           calorie_target: number | null
+          calories_burned: number | null
           calories_consumed: number | null
           created_at: string | null
+          cycle_day: number | null
           date: string
+          flow_level: string | null
           id: string
+          is_period: boolean | null
+          is_sick: boolean | null
           mood: string | null
           nsvs: string[] | null
+          sick_notes: string | null
           steps: number | null
           sugar_cravings: string | null
           symptoms: string[] | null
@@ -66,12 +113,18 @@ export type Database = {
         }
         Insert: {
           calorie_target?: number | null
+          calories_burned?: number | null
           calories_consumed?: number | null
           created_at?: string | null
+          cycle_day?: number | null
           date: string
+          flow_level?: string | null
           id?: string
+          is_period?: boolean | null
+          is_sick?: boolean | null
           mood?: string | null
           nsvs?: string[] | null
+          sick_notes?: string | null
           steps?: number | null
           sugar_cravings?: string | null
           symptoms?: string[] | null
@@ -83,12 +136,18 @@ export type Database = {
         }
         Update: {
           calorie_target?: number | null
+          calories_burned?: number | null
           calories_consumed?: number | null
           created_at?: string | null
+          cycle_day?: number | null
           date?: string
+          flow_level?: string | null
           id?: string
+          is_period?: boolean | null
+          is_sick?: boolean | null
           mood?: string | null
           nsvs?: string[] | null
+          sick_notes?: string | null
           steps?: number | null
           sugar_cravings?: string | null
           symptoms?: string[] | null

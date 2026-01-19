@@ -16,7 +16,8 @@ const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
-	allowedDevOrigins: ["*.theopenbuilder.com"],
+	// Remove allowedDevOrigins if not strictly necessary for production
+	// as it can sometimes interfere with header processing in certain environments
 };
 
 export default nextConfig;
